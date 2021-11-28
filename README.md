@@ -3,7 +3,7 @@
 ## Main links
 * [Master Thesis](https://github.com/severilov/master-thesis/blob/main/doc/Severilov2022MasterThesis_rus.pdf)
 * [Master Thesis presentation](https://github.com/severilov/master-thesis/pres/Severilov2022MasterThesisPres.pdf)
-* [Code for experiments](https://github.com/severilov/master-thesis/code/)
+* [Code for experiments](https://github.com/severilov/master-thesis/tree/main/code)
 
 ## Reviews
 * [Hamiltonian and Lagrangian Neural Networks](https://www.youtube.com/watch?v=Q-b-tKAtPtc&t=76s)
