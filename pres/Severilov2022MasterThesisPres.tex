@@ -8,6 +8,9 @@
 \usepackage{subfig}
 \usepackage[noend]{algorithmic}
 
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\input{../doc/newcommands.tex}
 
 \usepackage{multirow}
 \captionsetup{labelformat=empty}
@@ -36,14 +39,14 @@
 \setbeamertemplate{navigation symbols}{}
 
 %----------------------------------------------------------------------------------------------------------
-\title[HNN, LNN]{Hamiltonian and Lagrangian Neural Networks}
+\title[]{Дифференциальный анализ фазовых пространств в задаче декодирования сигналов}
 \author{Северилов Павел}
-\date{18 ноября 2021г.}
+\date{11 декабря 2021г.}
 \institute[МФТИ]{Московский физико-технический институт \\
 	Факультет управления и прикладной математики\\
 	Кафедра интеллектуальных систем
 	\vspace{0.3cm} \\
-	%Научный руководитель д.ф.-м.н. В.\,В.\,Cтрижов
+	Научный руководитель д.ф.-м.н. В.\,В.\,Cтрижов
 }
 
 \date{
@@ -60,160 +63,129 @@
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
 \begin{frame}{Введение}
-	\begin{block}{Области применения}
-		Моделирование физических систем, решение дифференциальных уравнений
-	\end{block}
+	\textbf{Рассматривается задача} выбора оптимальной модели декодирования сигналов. 
+	Процесс декодирования заключается в восстановлении зависимости между двумя наборами данных. \\ \vspace{0.3cm}
+	
+	\textbf{Проблема}: пространства исходных и целевых переменных обладают существенно избыточной размерностью.\\ \vspace{0.3cm}
 
-	\begin{block}{Проблема}
-		Существующие подходы с нейронными сетями не имеют априорных знаний о физике. Это мешает им выучить точные физические законы.
-	\end{block}
-
-	\begin{block}{Как решать}
-		Учить из данных законы сохранения/инвариантные величины
-		\begin{enumerate}
-			\item \textbf{Гамильтонова механика}: учить гамильтониан
-			\item \textbf{Лагранжева механика}: учить лагранжиан
-	\end{enumerate}
-	\end{block}
+	\textbf{Гипотеза}: построение отображения из исходного пространства в целевое как отображения между бесконечномерными пространствами. \\ \vspace{0.3cm}
+	
+	%Актуальность: предполагается, что рассматриваемый подход к декодированию сигналов применим к сигналам с носимых устройств:
+	%1 для передискретизации сигнала при низких частотах семплирования
+	%2 для обработки нерегулярных по времени данных при непостоянном контакте со считывающим устройством
+	
+	\textbf{Метод решения:}
+	Предлагаются подходы нейронного оператора и нейронного Фурье оператора.
 	
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Литература}
+\begin{frame}{Основные работы}
 	\begin{itemize}
-		\item \textit{Greydanus et al.} Hamiltonian Neural Networks, // Advances in Neural Information Processing Systems, 2019
-		\item \textit{M. Cranmer, Greydanus et al.} Lagrangian Neural Networks // arXiv preprint, 2020
-		\item \textit{Greydanus et al.}  Blog post on Hamiltonian Neural Networks // https://greydanus.github.io/2019/05/15/hamiltonian-nns
-		\item \textit{Greydanus et al.}  Blog post on Lagrangian Neural Networks article // https://greydanus.github.io/2020/03/10/lagrangian-nns
+		\item \textit{Li et al.} Fourier Neural Operator for Parametric Partial Differential Equations, // conference paper at ICLR 2021, 2020
+		\item \textit{Lu et al.} DeepONet: Learning nonlinear operators for identifying differential equations based on the universal approximation theorem of operators, // arXiv preprint arXiv:1910.03193, 2019
+		\item \textit{Kovachki et al.} Neural Operator: Learning Maps Between Function Spaces, //2021
+		\item \textit{Wen et al.} U-FNO -- an enhanced Fourier neural operator based-deep learning model for multiphase flow // arXiv preprint arXiv:2109.03697, 2021
 	\end{itemize}
-
+	
+	
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Гамильтонова механика}
-
-\begin{enumerate}
-	\item Выбрать набор координат, описывающих состояние системы: $\textbf{q}=(q_1, \cdots,q_N)$ -- позиции, $\textbf{p}=(p_1,\cdots,p_N)$ -- импульсы.
-	\item Записать полную энергию системы как функцию этих координат (гамильтониан $\mathcal{H}$). 
-	\item Используя уравнения Гамильтона, найти производные системы по времени:
-	$$
-	\frac{d \mathbf{q}}{d t}=\frac{\partial \mathcal{H}}{\partial \mathbf{p}}, \quad \frac{d \mathbf{p}}{d t}=-\frac{\partial \mathcal{H}}{\partial \mathbf{q}}
-	$$
-	Получили эволюцию координат ($\textbf{q, p}$) по времени: $
-	\mathbf{S}_{\mathcal{H}}=\left(\frac{\partial \mathcal{H}}{\partial \mathbf{p}},-\frac{\partial \mathcal{H}}{\partial \mathbf{q}}\right)
-	$
-	\item Интегрировать полученные производные по времени для получения состояния системы в какой-то момент времени в будущем: $$ \left(\mathbf{q}_{1}, \mathbf{p}_{1}\right)=\left(\mathbf{q}_{0}, \mathbf{p}_{0}\right)+\int_{t_{0}}^{t_{1}} \mathbf{S}(\mathbf{q}, \mathbf{p}) d t$$
-
-\end{enumerate}
-\end{frame}
-%-----------------------------------------------------------------------------------------------------
-\begin{frame}{Hamiltonian Neural Networks}
-
+\begin{frame}{Постановка задачи}
 	\begin{itemize}
-		\item \textbf{Ключевая идея}: параметризовать нейронной сетью гамильтониан $\mathcal{H}$, а не  $\frac{\Delta \mathbf{q}}{\Delta t},  \frac{\Delta \mathbf{p}}{\Delta t}$
-		\item \textbf{Задача оптимизации} из уравнений Гамильтона: 
-				$$
-		\underset{\theta}{\operatorname{argmin}}\left\|\frac{d \mathbf{q}}{d t}-\frac{\partial \mathcal{H}_{\theta}}{\partial \mathbf{p}}\right\|^{2}+\left\|\frac{d \mathbf{p}}{d t}+\frac{\partial \mathcal{H}_{\theta}}{\partial \mathbf{q}}\right\|^{2}
-		\Rightarrow $$
-		
-		$$\Rightarrow \mathcal{L}_{H N N}=\left\|\frac{\partial \mathcal{H}_{\theta}}{\partial \mathbf{p}}-\frac{\partial \mathbf{q}}{\partial t}\right\|_{2}+\left\|\frac{\partial \mathcal{H}_{\theta}}{\partial \mathbf{q}}+\frac{\partial \mathbf{p}}{\partial t}\right\|_{2}
+		\item $\mathcal{X}=\mathcal{X}\left(D ; \mathbb{R}^{d_{x}}\right)$ и $\mathcal{Y}=\mathcal{Y}\left(D ; \mathbb{R}^{d_{y}}\right)$ -- банаховы пространства функций на $D \subset \mathbb{R}^{x}$ 
+		\item $\Psi: \mathcal{X} \rightarrow \mathcal{Y}$ -- нелинейное отображение
+		\item Последовательность наблюдений $\left\{x_{j}, y_{j}\right\}_{j=1}^{N}$, где $y_{j}=\Psi\left(x_{j}\right)$ 
+		\item Требуется построить аппроксимацию $\Psi$
 		$$
+		\Psi_{\theta}: \mathcal{X} \rightarrow \mathcal{Y}, \quad \theta \in \Theta, \quad \quad \quad \Psi_{\theta^{\dagger}} \approx \Psi, \quad \theta^{\dagger} \in \Theta
+		,$$
+		где $\Theta$ -- конечномерное пространство параметров
+		\item Задача оптимизации
+		$$
+		\min_{\theta \in \Theta} \mathbb{E}_{x}\left[C\left(\Psi_{\theta}(x), \Psi(x)\right)\right]
+		,$$
+		где $C: \mathcal{Y} \times \mathcal{Y} \rightarrow \mathbb{R}$ -- функция ошибки
 	\end{itemize}
-
-\end{frame}
-%-----------------------------------------------------------------------------------------------------
-\begin{frame}{Hamiltonian Neural Networks}
 	\begin{figure}[h]
 	\centering
-	\includegraphics[width=0.99\textwidth]{hnn.png}
-	\caption{Рис.  Схема работы Hamiltonian Neural Networks (HNN) на системе с гамильтонианом $
-		\mathcal{H}=\frac{1}{2} k q^{2}+\frac{p^{2}}{2 m} $ в сравнении с базовым решением (Baseline NN)}
-	\end{figure}
-
+	\includegraphics[width=0.99\textwidth]{pics/slide3_1.png}
+	%\caption{Рис. 	}
+\end{figure}
 \end{frame}
+
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Hamiltonian Neural Networks – experiments}
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.89\textwidth]{3body_hnn.png}
-		\caption{Рис. Взаимодействие трех тел посредством гравитационных сил. HNN превосходит по качеству решение без априорного знаниия о физике системы (Baseline NN)}
-	\end{figure}
+\begin{frame}{Нейронный оператор}
+	Итеративная структура решения:
+	$$x\mapsto v_{0} \mapsto v_{1} \mapsto \ldots \mapsto v_{K} \mapsto y,$$
+	где $v_{j}, j=0,1, \ldots, K-1$ -последовательность функций, $v_{0}(p)=P(x(t))$,  $x(t)=Q\left(v_{K}(t)\right), Q: \mathbb{R}^{d_{v}} \rightarrow \mathbb{R}^{d_{y}}$, $P(.), Q(.)$ -- полносвязные слои
+	\begin{block}{Определение 1 (Слой нейронного оператора)}
+		$$v_{k+1}(t):=\sigma\left(W v_{k}(t)+\left(\mathcal{K}(x ; \phi) v_{k}\right)(t)\right), \quad \forall t \in D,$$
+		где  $\mathcal{K}(x ; \phi)$ -- ядерный интегральный оператор, $W: \mathbb{R}^{d_{v}} \rightarrow \mathbb{R}^{d_{v}}$ -- линейное преобразование, $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ -- нелинейная функция активации
+	\end{block}
+	\begin{block}{Определение 2 (Ядерный интегральный оператор)}
+		$$
+		\left(\mathcal{K}(x ; \phi) v_{k}\right)(t):=\int_{D} \kappa(t, q, x(t), x(q) ; \phi) v_{k}(q) \mathrm{d} q, \quad \forall p \in D,$$
+		где  $\kappa_{\phi}: \mathbb{R}^{2\left(d+d_{x}\right)} \rightarrow \mathbb{R}^{d_{v} \times d_{v}}$ --  нейросеть, параметризованная $\phi \in \Theta_{\mathcal{K}}$
+		
+	\end{block}
+	
 	
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Лагранжева механика}
-\begin{itemize}
-	\item \textbf{Проблемы HNN}: гамильтонов формализм требует, чтобы координаты системы были «каноническими»($(\textbf{q, p})$ должны подчиняться соотношениям, заданным скобками Пуассона) %-- многие системы не удовлетворяют этому ограничению (часто $p \neq q \cdot m$)
-	\item \textbf{Решение проблемы}: использовать лагранжианы систем (обеспечивают сохранение полной энергии, могут делать это с использованием произвольных координат)
+\begin{frame}{Нейронный Фурье оператор}
+
+	
+	\begin{block}{Определение 3 (Интегральный Фурье оператор)}
+		Убирая зависимость от функции $x$ и применяя теорему о свертке, получим:
+		$$
+		\left(\mathcal{K}(\phi) v_{k}\right)(t)=\mathcal{F}^{-1}\left(R_{\phi} \cdot\left(\mathcal{F} v_{k}\right)\right)(t) \quad \forall t \in D,
+		$$ 
+		где $R_{\phi} = \mathcal{F}\left(\kappa_{\phi}\right) $ -- преобразование Фурье функции $\kappa: \bar{D} \rightarrow \mathbb{R}^{d_{v} \times d_{v}}$ параметризованной $\phi \in \Theta_{\mathcal{K}}$
+		
+	\end{block}
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.99\textwidth]{pics/architecture.png}
+		\caption{Рис.  Структура нейронного Фурье оператора}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Понижение размерностей}
+	 \textbf{Гипотеза}: 
+	 \begin{enumerate}
+	 	\item Понижение размерностей исходного и целевого пространств на основе методов PCA, PLS (отображения $F_{\mathcal{X}}, F_{\mathcal{Y}}$ в размерность ниже, отображения в исходную размерность $G_{\mathcal{X}}, G_{\mathcal{Y}}$)
+	 	\item Построение отображения $\chi$ между пространствами с размерностью ниже исходной
+	 \end{enumerate}
+ $$
+ \begin{aligned}
+ G_{\mathcal{X}} \circ F_{\mathcal{X}} & \approx I_{\mathcal{X}} \\
+ G_{\mathcal{Y}} \circ F_{\mathcal{Y}} & \approx I_{\mathcal{Y}} \\
+ \end{aligned}$$
+ $$\boxed{G_{\mathcal{Y}} \circ \chi \circ F_{\mathcal{X}}  \approx \Psi} $$
+ 
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{pics/pca.png}
+		\caption{Рис. коммутативная диаграмма общей схемы декодирования при понижении исходного и целевого пространств ($\mathcal{X}, \mathcal{Y}$)}
+	\end{figure}
+
+\end{frame}
+%------------------------------------------------------------------------------------------------
+\begin{frame}{Будущая работа}
+ \begin{itemize}
+ 	\item Проведение экспериментов с применением FNO к декодированию сигналов EEG. 
+ 	\item Проведение экспериментов с применением FNO к декодированию сигналов EEG с понижением исходного и целевого пространств
+ 	\item Сравнение с существующими подходами
 \end{itemize}
 
-\begin{block}{Моделирование динамики системы с помощью лагранжиана}
-	\begin{enumerate}
-		\item Найти аналитические выражения для кинетической и потенциальной энергии $(T, V )$
-		\item Записать лагранжиан $\mathcal{L} = T - V $
-		\item Применить ограничение Эйлера-Лагранжа $\frac{d}{d t} \frac{\partial \mathcal{L}}{\partial \dot{q}_{j}} =\frac{\partial \mathcal{L}}{\partial q_{j}} $
-		\item Решить получившуюся систему дифференциальных уравнений
-	\end{enumerate}
-\end{block}
-
-
 \end{frame}
-%------------------------------------------------------------------------------------------------
-\begin{frame}{Lagrangian Neural Networks}
-	
-	\begin{itemize}
-		\item \textbf{Ключевая идея}: параметризовать нейронной сетью лагранжиан $\mathcal{L}$, получить выражение ограничения Эйлера-Лагранжа, обратно распространить ошибку через полученные ограничения
-		\item Получение 	$$
-		\begin{aligned}
-		\frac{d}{d t} \frac{\partial \mathcal{L}}{\partial \dot{q}_{j}} =\frac{\partial \mathcal{L}}{\partial q_{j}}  \Rightarrow \frac{d}{d t} \nabla_{\dot{q}} \mathcal{L} =\nabla_{q} \mathcal{L} \\
-		\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} \mathcal{L}\right) \ddot{q}+\left(\nabla_{q} \nabla_{\dot{q}}^{\top} \mathcal{L}\right) \dot{q} =\nabla_{q} \mathcal{L} \\
-		\ddot{q} =\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} \mathcal{L}\right)^{-1}\left[\nabla_{q} \mathcal{L}-\left(\nabla_{q} \nabla_{\dot{q}}^{\top} \mathcal{L}\right) \dot{q}\right]
-		\end{aligned}
-		$$
-		\item Для заданного набора координат $x_t = (q_t, \dot{q}_t)$ получили метод вычисления $\dot{x}_t = (\dot{q}_t, \ddot{q}_t)$ из параметризованного лагранжиана.
-		\item \textbf{Функция ошибки}: $$\mathcal{L} = \left\|\dot{x}^{\mathcal{L_{\theta}}}_t -\dot{x}^{true}_t\right\|_{2}$$
-	\end{itemize}
-
-	
-\end{frame}
-%------------------------------------------------------------------------------------------------
-\begin{frame}{Lagrangian Neural Networks}
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.99\textwidth]{lnn.png}
-		\caption{Рис. Схема работы Lagrangian Neural Networks (LNN) моделирования динамики двойного маятника в сравнении с базовым решением (Baseline NN)}
-	\end{figure}
-	
-\end{frame}
-%------------------------------------------------------------------------------------------------
-\begin{frame}{Вычислительный эксперимент-сравнение LNN и HNN}
-	Рассматривается частица с массой $m=1$, релятивистской скоростью $c=1$, движущейся в потенциале $g$. Лагранжиан системы: 
-	$$\mathcal{L}=\left(\left(1-\dot{q}^{2}\right)^{-1 / 2}-1\right)+g q$$
-
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=1.05\textwidth]{hnn_vs_lnn.png}
-		\caption{Рис. Результаты по задаче релятивистской частицы. В (а) модель HNN не может выучить динамику из неканонических координат. В (b) HNN удается выучить динамику, если заданы канонические координаты. В (c) LNN выучивает точную динамику из неканонических координат}
-	\end{figure}
-	
-\end{frame}
-%------------------------------------------------------------------------------------------------
-\begin{frame}{Сравнение}
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=1.05\textwidth]{comparison.png}
-		\caption{Рис. Сравнение подходов моделирования физических систем нейронными сетями}
-	\end{figure}
-	
-\end{frame}
-%------------------------------------------------------------------------------------------------
-\begin{frame}{Вопросы}
-	\begin{itemize}
-		\item В чем мотивация рассмотренных моделей HNN и LNN?
-		\item Что аппроксимирует нейронная сеть в HNN, в LNN?
-		\item В чем преимущество LNN над HNN? 
-	\end{itemize}
-
-
-\end{frame}
-
+%\begin{frame}{Вычислительный эксперимент}
+%	\begin{figure}[h]
+%		\centering
+%		\includegraphics[width=0.99\textwidth]{experiments.png}
+%		\caption{Рис. Результаты экспериментов для уравнения Бюргерса, потоков Дарси, %уравнениий Навье — Стокса}
+%	\end{figure}
+%	
+%\end{frame}
 
 \end{document} 
