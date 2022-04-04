@@ -1,0 +1,26 @@
+description:
+  model_name: lnn
+  task_type: pendulum
+
+mlflow:
+  uri: <insert your mlflow hostname>
+  username: <insert your mlflow username>
+  password: <insert your mlflow password>
+
+data:
+  dataset_name: pendulum
+
+model:
+  type: lnn
+  params: 0
+
+train:
+  epoch: 20
+  batch_size: 6
+  workers: 6
+  min_mse: 0.1
+  optimizer:
+    type: Adam
+    params:
+      lr: 0.001
+      weight_decay: 0.00005
