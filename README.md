@@ -26,20 +26,20 @@ for Engineering and Environmental Systems](https://arxiv.org/pdf/2003.04919.pdf)
     * [links] [Neural Operator approaches links](https://zongyi-li.github.io/neural-operator/)
 
 ### Models
-* HNN: [[paper](https://arxiv.org/abs/1906.01563v1) | [code](https://github.com/greydanus/hamiltonian-nn)] (Hamiltonian Neural Networks)
-* LNN: [[paper](https://arxiv.org/abs/2003.04630) | [code](https://github.com/MilesCranmer/lagrangian_nns)]
+* **HNN**: [[paper](https://arxiv.org/abs/1906.01563v1) | [code](https://github.com/greydanus/hamiltonian-nn)] (Hamiltonian Neural Networks)
+* **LNN**: [[paper](https://arxiv.org/abs/2003.04630) | [code](https://github.com/MilesCranmer/lagrangian_nns)]
 (Lagrangian Neural Networks)
-* DeLaN: [[paper1](https://arxiv.org/abs/1907.04489) [paper2](https://arxiv.org/abs/1907.04490) [paper3](https://arxiv.org/abs/2110.01894)| [code](https://github.com/milutter/deep_lagrangian_networks) | [other_related_projects](http://www.mlutter.eu/projects/)] (Deep Lagrangian Networks)
-* FNO: [[paper](https://arxiv.org/abs/2010.08895) | [code](https://github.com/zongyi-li/fourier_neural_operator) | [blog_post](https://zongyi-li.github.io/blog/2020/fourier-pde/)]
+* **DeLaN**: [[paper1](https://arxiv.org/abs/1907.04489) [paper2](https://arxiv.org/abs/1907.04490) [paper3](https://arxiv.org/abs/2110.01894)| [code](https://github.com/milutter/deep_lagrangian_networks) | [other_related_projects](http://www.mlutter.eu/projects/)] (Deep Lagrangian Networks)
+* **FNO**: [[paper](https://arxiv.org/abs/2010.08895) | [code](https://github.com/zongyi-li/fourier_neural_operator) | [blog_post](https://zongyi-li.github.io/blog/2020/fourier-pde/)]
 (Fourier Neural Operator for Parametric Partial Differential Equations)
-* PINO: [[paper](https://arxiv.org/abs/2111.03794) | [code](https://github.com/devzhk/PINO)] (Physics-Informed Neural Operator for Learning Partial Differential Equations)
-* DeepONet: [[paper](https://arxiv.org/abs/1910.03193) | [code](https://github.com/lululxvi/deeponet) | [presentation](https://lululxvi.github.io/files/talks/2020SIAMMDS_MS1.pdf)]
+* **PINO**: [[paper](https://arxiv.org/abs/2111.03794) | [code](https://github.com/devzhk/PINO)] (Physics-Informed Neural Operator for Learning Partial Differential Equations)
+* **DeepONet**: [[paper](https://arxiv.org/abs/1910.03193) | [code](https://github.com/lululxvi/deeponet) | [presentation](https://lululxvi.github.io/files/talks/2020SIAMMDS_MS1.pdf)]
 (DeepONet: Learning nonlinear operators for identifying differential equations based on the universal approximation theorem of operators)
-* NeuralODE: [[paper](https://arxiv.org/abs/1806.07366) | [code](https://github.com/rtqichen/torchdiffeq)]
+* **NeuralODE**: [[paper](https://arxiv.org/abs/1806.07366) | [code](https://github.com/rtqichen/torchdiffeq)]
 (Neural Ordinary Differential Equations)
-* DiffCoSim: [[paper](https://arxiv.org/abs/2102.06794) | [code](https://github.com/Physics-aware-AI/DiffCoSim)] (Extending Lagrangian and Hamiltonian Neural Networks with Differentiable Contact Models)
-* PINNs: [[paper1](https://arxiv.org/abs/1711.10561) [paper2](https://arxiv.org/abs/1711.10566) [paper3](https://www.sciencedirect.com/science/article/pii/S0021999118307125) | [code](https://github.com/janblechschmidt/PDEsByNNs/blob/main/PINN_Solver.ipynb)] (Physics-informed neural networks)
-* (???) PGNN: [[paper](https://arxiv.org/pdf/1710.11431.pdf) | code] (Physics-guided Neural Networks (PGNN): An Application in Lake Temperature Modeling)
+* **DiffCoSim**: [[paper](https://arxiv.org/abs/2102.06794) | [code](https://github.com/Physics-aware-AI/DiffCoSim)] (Extending Lagrangian and Hamiltonian Neural Networks with Differentiable Contact Models)
+* **PINNs**: [[paper1](https://arxiv.org/abs/1711.10561) [paper2](https://arxiv.org/abs/1711.10566) [paper3](https://www.sciencedirect.com/science/article/pii/S0021999118307125) | [code](https://github.com/janblechschmidt/PDEsByNNs/blob/main/PINN_Solver.ipynb)] (Physics-informed neural networks)
+* (???) **PGNN**: [[paper](https://arxiv.org/pdf/1710.11431.pdf) | code] (Physics-guided Neural Networks (PGNN): An Application in Lake Temperature Modeling)
 
 ### Useful code links
 * [Experiments comparison of FC NN, LSTM, LNN on pendulum system](https://github.com/gthampak/physinet.io)
