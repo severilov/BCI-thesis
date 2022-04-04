@@ -30,7 +30,7 @@ for Engineering and Environmental Systems](https://arxiv.org/pdf/2003.04919.pdf)
 * [theory] [Теоремы Нётер](https://www.wikiwand.com/ru/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%9D%D1%91%D1%82%D0%B5%D1%80)
 * ![paper] [Noether's Learning Dynamics: Role of Symmetry Breaking in Neural Networks](https://arxiv.org/abs/2105.02716)
 * [blog_post] [Noether’s Theorem, Symmetries, and Invariant Neural Networks](https://fabianfuchsml.github.io/noether/)
-* ! Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics [paper](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/)
+* ! [paper](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/) Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics
 * ![paper] [Noether: The More Things Change, the More Stay the Same](https://arxiv.org/pdf/2104.05508.pdf)
 * ![paper] [Interpretable conservation law estimation by deriving the symmetries of dynamics
 from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.103.033303)
