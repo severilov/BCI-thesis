@@ -25,16 +25,6 @@ Parametric PDEs](https://link.springer.com/content/pdf/10.1007/s00365-021-09551-
 for Engineering and Environmental Systems](https://arxiv.org/pdf/2003.04919.pdf)
     * [links] [Neural Operator approaches links](https://zongyi-li.github.io/neural-operator/)
     * (optional) [paper] [Scientific Machine Learning through Physics-Informed Neural Networks: Where we are and What’s next](https://arxiv.org/pdf/2201.05624.pdf)
-
-### Symmetry and Noether's theorem
-* [theory] [Теоремы Нётер](https://www.wikiwand.com/ru/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%9D%D1%91%D1%82%D0%B5%D1%80)
-* ![paper] [Noether's Learning Dynamics: Role of Symmetry Breaking in Neural Networks](https://arxiv.org/abs/2105.02716)
-* [blog_post] [Noether’s Theorem, Symmetries, and Invariant Neural Networks](https://fabianfuchsml.github.io/noether/)
-* ! [paper](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/) Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics
-* ![paper] [Noether: The More Things Change, the More Stay the Same](https://arxiv.org/pdf/2104.05508.pdf)
-* ![paper] [Interpretable conservation law estimation by deriving the symmetries of dynamics
-from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.103.033303)
-
 ### Models
 * **HNN**: [[paper](https://arxiv.org/abs/1906.01563v1) | [code](https://github.com/greydanus/hamiltonian-nn)] (Hamiltonian Neural Networks)
 * **LNN**: [[paper](https://arxiv.org/abs/2003.04630) | [code](https://github.com/MilesCranmer/lagrangian_nns) | [lecture](https://www.youtube.com/watch?v=27ravidF96g)]
@@ -50,6 +40,15 @@ from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/Phys
 * **DiffCoSim**: [[paper](https://arxiv.org/abs/2102.06794) | [code](https://github.com/Physics-aware-AI/DiffCoSim)] (Extending Lagrangian and Hamiltonian Neural Networks with Differentiable Contact Models)
 * **PINNs**: [[paper1](https://arxiv.org/abs/1711.10561) [paper2](https://arxiv.org/abs/1711.10566) [paper3](https://www.sciencedirect.com/science/article/pii/S0021999118307125) | [code](https://github.com/janblechschmidt/PDEsByNNs/blob/main/PINN_Solver.ipynb)] (Physics-informed neural networks)
 * (???) **PGNN**: [[paper](https://arxiv.org/pdf/1710.11431.pdf) | code] (Physics-guided Neural Networks (PGNN): An Application in Lake Temperature Modeling)
+
+### Symmetry and Noether's theorem
+* [theory] [Теоремы Нётер](https://www.wikiwand.com/ru/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%9D%D1%91%D1%82%D0%B5%D1%80)
+* [paper] [Noether's Learning Dynamics: Role of Symmetry Breaking in Neural Networks](https://arxiv.org/abs/2105.02716)
+* [blog_post] [Noether’s Theorem, Symmetries, and Invariant Neural Networks](https://fabianfuchsml.github.io/noether/)
+* [paper](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/) Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics
+* [paper] [Noether: The More Things Change, the More Stay the Same](https://arxiv.org/pdf/2104.05508.pdf)
+* [paper] [Interpretable conservation law estimation by deriving the symmetries of dynamics
+from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.103.033303)
 
 ### Useful code links
 * [Experiments comparison of FC NN, LSTM, LNN on pendulum system](https://github.com/gthampak/physinet.io)
