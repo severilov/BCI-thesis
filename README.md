@@ -30,7 +30,7 @@ for Engineering and Environmental Systems](https://arxiv.org/pdf/2003.04919.pdf)
 * [theory] [Теоремы Нётер](https://www.wikiwand.com/ru/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%9D%D1%91%D1%82%D0%B5%D1%80)
 * ![paper] [Noether's Learning Dynamics: Role of Symmetry Breaking in Neural Networks](https://arxiv.org/abs/2105.02716)
 * [blog_post] [Noether’s Theorem, Symmetries, and Invariant Neural Networks](https://fabianfuchsml.github.io/noether/)
-* !!! [paper] [Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/)
+* ! Neural Mechanics: Symmetry and Broken Conservation Laws in Deep Learning Dynamics [paper](https://arxiv.org/abs/2012.04728) | [lecture](https://www.youtube.com/watch?v=xiumcpMqkXM) | [slides](http://www.physicsmeetsml.org/pdf/seminar_kunin-tanaka.pdf) | [blog_post](https://ai.stanford.edu/blog/neural-mechanics/)
 * ![paper] [Noether: The More Things Change, the More Stay the Same](https://arxiv.org/pdf/2104.05508.pdf)
 * ![paper] [Interpretable conservation law estimation by deriving the symmetries of dynamics
 from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.103.033303)
@@ -39,7 +39,7 @@ from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/Phys
 * **HNN**: [[paper](https://arxiv.org/abs/1906.01563v1) | [code](https://github.com/greydanus/hamiltonian-nn)] (Hamiltonian Neural Networks)
 * **LNN**: [[paper](https://arxiv.org/abs/2003.04630) | [code](https://github.com/MilesCranmer/lagrangian_nns) | [lecture](https://www.youtube.com/watch?v=27ravidF96g)]
 (Lagrangian Neural Networks)
-* **DeLaN**: [[paper1](https://arxiv.org/abs/1907.04489) [paper2](https://arxiv.org/abs/1907.04490) [paper3](https://arxiv.org/abs/2110.01894)| [code](https://github.com/milutter/deep_lagrangian_networks) | [other_related_projects](http://www.mlutter.eu/projects/)] (Deep Lagrangian Networks)
+* **DeLaN**: [[paper1](https://arxiv.org/abs/1907.04489) [paper2](https://arxiv.org/abs/1907.04490) [paper3](https://arxiv.org/abs/2110.01894) | [code](https://github.com/milutter/deep_lagrangian_networks) | [other_related_projects](http://www.mlutter.eu/projects/)] (Deep Lagrangian Networks)
 * **FNO**: [[paper](https://arxiv.org/abs/2010.08895) | [code](https://github.com/zongyi-li/fourier_neural_operator) | [blog_post](https://zongyi-li.github.io/blog/2020/fourier-pde/)]
 (Fourier Neural Operator for Parametric Partial Differential Equations)
 * **PINO**: [[paper](https://arxiv.org/abs/2111.03794) | [code](https://github.com/devzhk/PINO)] (Physics-Informed Neural Operator for Learning Partial Differential Equations)
