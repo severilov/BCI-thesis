@@ -1,21 +1,17 @@
 # Master-thesis
 
-## Main links
 * [Master Thesis](https://github.com/severilov/master-thesis/blob/main/doc/Severilov2022MasterThesis_rus.pdf)
 * [Master Thesis presentation](https://github.com/severilov/master-thesis/blob/main/pres/Severilov2022MasterThesisPres.pdf)
 * [Code for experiments](https://github.com/severilov/master-thesis/tree/main/code)
 * [Code Usage](https://github.com/severilov/master-thesis/tree/main/code/README.md)
 
-----
 ## Abstract
 TODO
 
-------
 ## Video reviews by P.Severilov
 * [Hamiltonian and Lagrangian Neural Networks](https://www.youtube.com/watch?v=Q-b-tKAtPtc&t=76s)
 * [Fourier Neural Operator for PDEs](https://www.youtube.com/watch?v=YA3Vb9e5hQI&t=22s)
 
------
 ## Literature
 * [book] [Physics-based Deep Learning](https://arxiv.org/abs/2109.05237) ([Book Website](https://physicsbaseddeeplearning.org/intro.html))
 * [Теоремы Нётер](https://www.wikiwand.com/ru/%D0%A2%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0_%D0%9D%D1%91%D1%82%D0%B5%D1%80)
