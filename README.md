@@ -1,11 +1,27 @@
-# Master-thesis
+# Physics-based DL models symmetry
 
+- [Physics-based DL models symmetry](#bayesian-experimental-design-using-regularized-determinantal-point-processes)
+  - [Main resources](#main)
+  - [Abstract](#abstract)
+  - [Results](#results)
+  - [Video reviews](#video-reviews-by-pseverilov)
+  - [Literature](#literature)
+      - [General](#general)
+      - [Models](#models)
+      - [Symmetry and Noether's theorem](#symmetry-and-noethers-theorem)
+      - [Useful code links](#useful-code-links)
+      - [Other intresting](#other-intresting)
+
+## Main
 * [Master Thesis](https://github.com/severilov/master-thesis/blob/main/doc/Severilov2022MasterThesis_rus.pdf)
 * [Master Thesis presentation](https://github.com/severilov/master-thesis/blob/main/pres/Severilov2022MasterThesisPres.pdf)
 * [Code for experiments](https://github.com/severilov/master-thesis/tree/main/code)
 * [Code Usage](https://github.com/severilov/master-thesis/tree/main/code/README.md)
 
 ## Abstract
+TODO
+
+## Results
 TODO
 
 ## Video reviews by P.Severilov
