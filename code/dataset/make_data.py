@@ -9,7 +9,7 @@ from functools import partial # reduces arguments to function by making some sub
 
 from jax.lib import xla_bridge
 
-from plot import visualize_data
+from .plot import visualize_data
 
 #print(xla_bridge.get_backend().platform)
 
@@ -84,12 +84,6 @@ def solve_analytical(initial_state, times):
     """
     return odeint(f_analytical, initial_state, t=times, rtol=1e-10, atol=1e-10)
 
-def normalize_dp(state):
-    """
-    wrap generalized coordinates to [-pi, pi]
-    """
-    return jnp.concatenate([(state[:2] + np.pi) % (2 * np.pi) - np.pi, state[2:]])
-
 def rk4_step(f, x, t, h):
     """
     One step of runge-kutta integration
@@ -136,7 +130,7 @@ def main():
         pickle.dump(test_arr, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     visualize_data(x_train, x_test)
-    
+
 
 if __name__ == '__main__':
     main()

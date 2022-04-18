@@ -102,3 +102,38 @@ class DoublePendulumDataset(torch.utils.data.Dataset):
         x_sample,y_sample = self.sample_list[idx]
         return x_sample, y_sample
         #return torch.from_numpy(np.array(X_sample)).float(),torch.from_numpy(np.array(y_sample)).float()
+
+
+class SimulateDataset(torch.utils.data.Dataset):
+    """
+    FC
+    """
+    def __init__(self, x_set, y_set):
+        self.sample_list = list(zip(x_set, y_set))
+        
+    def __len__(self):
+        return len(self.sample_list)
+
+    def __getitem__(self, idx):
+        x_sample,y_sample = self.sample_list[idx]
+        return x_sample, y_sample
+
+class DatasetLSTM(torch.utils.data.Dataset):
+    '''
+    Generate a LSTM dataset from a normalized dataset
+    '''
+    def __init__(self,seq_list):
+        self.X_list = []
+        self.y_list = []
+        for seq in tqdm(seq_list):
+            for i in range(seq.shape[0] - 5):
+                self.X_list.append(seq[[i,i+1,i+2,i+3],:])
+                self.y_list.append(seq[i+4,:])
+        self.sample_list = list(zip(self.X_list, self.y_list))
+    
+    def __getitem__(self,index):
+        X_sample,y_sample = self.sample_list[index]
+        return torch.from_numpy(X_sample).float(),torch.from_numpy(y_sample).float()
+    
+    def __len__(self):
+        return len(self.sample_list)
