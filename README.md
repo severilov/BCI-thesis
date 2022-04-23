@@ -67,7 +67,9 @@ for Engineering and Environmental Systems](https://arxiv.org/pdf/2003.04919.pdf)
 from trained deep neural networks](https://journals.aps.org/pre/pdf/10.1103/PhysRevE.103.033303)
 
 ### Useful code links
-* [Experiments comparison of FC NN, LSTM, LNN on pendulum system](https://github.com/gthampak/physinet.io)
+<!--  
+ * [Experiments comparison of FC NN, LSTM, LNN on pendulum system](https://github.com/gthampak/physinet.io) 
+ -->
 * [A self-contained tutorial for LNNs.ipynb](https://colab.research.google.com/drive/1CSy-xfrnTX28p1difoTA8ulYw0zytJkq#scrollTo=mhUbF1-vXY-b)
 * (???) [Jupyter notebooks with 3 approaches to solve PDEs by NNs](https://github.com/janblechschmidt/PDEsByNNs) (PINNs, Feynman-Kac solver, Deep BSDE solver) ([PDF](https://onlinelibrary.wiley.com/doi/full/10.1002/gamm.202100006))
 * [PhyCRNet](https://github.com/isds-neu/PhyCRNet) (Physics-informed convolutional-recurrent neural networks for PDEs)
