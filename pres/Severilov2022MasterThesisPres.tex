@@ -5,9 +5,12 @@
 \usepackage[english, russian]{babel}
 \usepackage{amsmath,mathrsfs,amsfonts,amssymb, mathtools}
 \usepackage{graphicx, epsfig}
-\usepackage{subfig}
-\usepackage[noend]{algorithmic}
 
+
+
+\usepackage{float}
+\usepackage[noend]{algorithmic}
+\usepackage{subcaption}
 \usepackage{tikz}
 \usetikzlibrary{matrix}
 \input{../doc/newcommands.tex}
@@ -17,33 +20,24 @@
 \usepackage{wrapfig}
 
 
-\newcommand{\hchi}{\hat{\boldsymbol{\chi}}}
-\newcommand{\B}{\mathcal{B}}
-\newcommand{\hx}{\hat{x}}
-\newcommand{\hy}{\hat{y}}
-
-\def\algorithmicrequire{\textbf{\textcolor[rgb]{0.00,0.00,1.00}{Вход:}}}
-\def\algorithmicensure{\textbf{\textcolor[rgb]{0.00,0.00,1.00}{Выход:}}}
-
-\usetheme{Warsaw}%{Singapore}%{Warsaw}%{Warsaw}%{Darmstadt}
-\usecolortheme{sidebartab}
-\setbeamertemplate{footline}[author]
-\expandafter\def\expandafter\insertshorttitle\expandafter{%
-	\insertshorttitle\hfill%
-	\insertframenumber\,/\,\inserttotalframenumber}
-
-
 \definecolor{beamer@blendedblue}{RGB}{15,120,80}
-\graphicspath{{../pics/}}
-% отключить клавиши навигации
+\graphicspath{{../figures/}}
+
 \setbeamertemplate{navigation symbols}{}
 
+\mode<presentation>
+{
+	\usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+	\usecolortheme{default} % or try albatross, beaver, crane, ...
+	\usefonttheme{default}  % or try serif, structurebold, ...
+	\setbeamertemplate{navigation symbols}{}
+	\setbeamertemplate{caption}[numbered]
+} 
 %----------------------------------------------------------------------------------------------------------
-\title[]{Дифференциальный анализ фазовых пространств в задаче декодирования сигналов}
+\title[]{Выбор оптимальной модели в задаче моделирования динамики физической системы нейронными сетями}
 \author{Северилов Павел}
-\date{11 декабря 2021г.}
+\date{27 апреля 2022г.}
 \institute[МФТИ]{Московский физико-технический институт \\
-	Факультет управления и прикладной математики\\
 	Кафедра интеллектуальных систем
 	\vspace{0.3cm} \\
 	Научный руководитель д.ф.-м.н. В.\,В.\,Cтрижов
@@ -51,7 +45,7 @@
 
 \date{
 	Москва,\\
-	2021\,г.
+	2022\,г.
 }
 
 %----------------------------------------------------------------------------------------------------------
@@ -63,129 +57,145 @@
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
 \begin{frame}{Введение}
-	\textbf{Рассматривается задача} выбора оптимальной модели декодирования сигналов. 
-	Процесс декодирования заключается в восстановлении зависимости между двумя наборами данных. \\ \vspace{0.3cm}
+	\textbf{Рассматривается задача} выбора оптимальной модели предсказания динамики физической системы. Под динамикой системы понимается изменение во времени параметров системы. \\ \vspace{0.3cm}
 	
-	\textbf{Проблема}: пространства исходных и целевых переменных обладают существенно избыточной размерностью.\\ \vspace{0.3cm}
+	\textbf{Проблема}: Интерпретируемые модели решения задачи разработаны для получения динамики ограниченного набора физических систем, не полностью учитывают физические законы \\ \vspace{0.3cm}
 
-	\textbf{Гипотеза}: построение отображения из исходного пространства в целевое как отображения между бесконечномерными пространствами. \\ \vspace{0.3cm}
+	\textbf{Гипотеза}: Лагранжева нейронная сеть (LNN) является оптимальной моделью в смысле точности и сложности \\ \vspace{0.3cm}
 	
 	%Актуальность: предполагается, что рассматриваемый подход к декодированию сигналов применим к сигналам с носимых устройств:
 	%1 для передискретизации сигнала при низких частотах семплирования
 	%2 для обработки нерегулярных по времени данных при непостоянном контакте со считывающим устройством
 	
-	\textbf{Метод решения:}
-	Предлагаются подходы нейронного оператора и нейронного Фурье оператора.
+	\textbf{Предлагается:}
+	Сгенерировать данные для системы двойного маятника и сравнить моделирование динамики системы моделью LNN и неинтерпретируемыми моделями. \\ \vspace{0.3cm}
 	
+	\textbf{Новизна:}
+	Интерпретация оптимальности модели LNN в терминах симметрии Нётер. Предлагается использование новой модификации LNN, учитывающей иные симметрии кроме закона сохранения энергии.
+		
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Основные работы}
-	\begin{itemize}
-		\item \textit{Li et al.} Fourier Neural Operator for Parametric Partial Differential Equations, // conference paper at ICLR 2021, 2020
-		\item \textit{Lu et al.} DeepONet: Learning nonlinear operators for identifying differential equations based on the universal approximation theorem of operators, // arXiv preprint arXiv:1910.03193, 2019
-		\item \textit{Kovachki et al.} Neural Operator: Learning Maps Between Function Spaces, //2021
-		\item \textit{Wen et al.} U-FNO -- an enhanced Fourier neural operator based-deep learning model for multiphase flow // arXiv preprint arXiv:2109.03697, 2021
-	\end{itemize}
+%\begin{frame}{Основные работы}
+%	\begin{itemize}
+%		\item \textit{Li et al.} Fourier Neural Operator for Parametric Partial Differential Equations, // conference paper at ICLR 2021, 2020
+%		\item \textit{Lu et al.} DeepONet: Learning nonlinear operators for identifying differential equations based on the universal approximation theorem of operators, // arXiv preprint arXiv:1910.03193, 2019
+%		\item \textit{Kovachki et al.} Neural Operator: Learning Maps Between Function Spaces, //2021
+%		\item \textit{Wen et al.} U-FNO -- an enhanced Fourier neural operator based-deep learning model for multiphase flow // arXiv preprint arXiv:2109.03697, 2021
+%	\end{itemize}
 	
 	
+%\end{frame}
+
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Лагранжевы нейронные сети (LNN)}
+\begin{itemize}
+	\item Вход модели: $x_t = (q_t, \dot{q}_t)$ (канонические координаты)
+	\item Требуется получить $\dot{x}_t = (\dot{q}_t, \ddot{q}_t)$
+	\item Аппроксимировать нейронной сетью лагранжиан $\mathcal{L}$
+	\item Из ограничений Эйлера-Лагранжа получить выражение для обратного распространения ошибки
+	$$
+	\ddot{q} =\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} \mathcal{L}\right)^{-1}\left[\nabla_{q} \mathcal{L}-\left(\nabla_{q} \nabla_{\dot{q}}^{\top} \mathcal{L}\right) \dot{q}\right]
+	$$ 
+	\item \textbf{Функция ошибки}: $$\mathcal{L} = \left\|\dot{x}^{\mathcal{L_{\theta}}}_t -\dot{x}^{true}_t\right\|_{2}$$
+\end{itemize}
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Постановка задачи}
-	\begin{itemize}
-		\item $\mathcal{X}=\mathcal{X}\left(D ; \mathbb{R}^{d_{x}}\right)$ и $\mathcal{Y}=\mathcal{Y}\left(D ; \mathbb{R}^{d_{y}}\right)$ -- банаховы пространства функций на $D \subset \mathbb{R}^{x}$ 
-		\item $\Psi: \mathcal{X} \rightarrow \mathcal{Y}$ -- нелинейное отображение
-		\item Последовательность наблюдений $\left\{x_{j}, y_{j}\right\}_{j=1}^{N}$, где $y_{j}=\Psi\left(x_{j}\right)$ 
-		\item Требуется построить аппроксимацию $\Psi$
-		$$
-		\Psi_{\theta}: \mathcal{X} \rightarrow \mathcal{Y}, \quad \theta \in \Theta, \quad \quad \quad \Psi_{\theta^{\dagger}} \approx \Psi, \quad \theta^{\dagger} \in \Theta
-		,$$
-		где $\Theta$ -- конечномерное пространство параметров
-		\item Задача оптимизации
-		$$
-		\min_{\theta \in \Theta} \mathbb{E}_{x}\left[C\left(\Psi_{\theta}(x), \Psi(x)\right)\right]
-		,$$
-		где $C: \mathcal{Y} \times \mathcal{Y} \rightarrow \mathbb{R}$ -- функция ошибки
-	\end{itemize}
-	\begin{figure}[h]
+\begin{frame}{Лагранжевы нейронные сети (LNN)}
+	 \begin{figure}[H]
+	 	\centering
+	 	\begin{subfigure}[b]{0.49\textwidth}
+	 		\centering
+	 		\includegraphics[width=0.6\textwidth]{baseline_nn_scheme.png}
+	 		\caption{Схема работы базового решения моделирования динамики физической системы нейронными сетями}
+	 		\label{fig:y equals x}
+	 	\end{subfigure}
+	 	\hfill
+	 	\begin{subfigure}[b]{0.49\textwidth}
+	 		\centering
+	 		\includegraphics[width=\textwidth]{lnn_scheme.png}
+	 		\caption{Схема работы Lagrangian Neural Networks (LNN) моделирования динамики физической системы}
+	 		\label{fig:three sin x}
+	 	\end{subfigure}
+	 \end{figure}
+
+\end{frame}
+
+%-----------------------------------------------------------------------------------------------------
+
+\begin{frame}{Вычислительный эксперимент: Данные}
+	Лагранжиан системы двойного маятника:
+	$$
+	\begin{aligned}
+	L=\frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} &+\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\theta_{1}-\theta_{2}\right) \\
+	&+\left(m_{1}+m_{2}\right) g l_{1} \cos \theta_{1}+m_{2} g l_{2} \cos \theta_{2}
+	\end{aligned}
+	$$
+	\begin{figure}[H]
+		\centering
+		\begin{subfigure}[b]{0.49\textwidth}
+			\centering
+			\includegraphics[width=0.9\textwidth]{double_pendulum_scheme.png}
+			\caption{Cхема физической системы двойного маятника}
+			\label{fig:pendulum_system}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[b]{0.49\textwidth}
+			\centering
+			\includegraphics[width=0.9\textwidth]{data_field.png}
+			\caption{Визуализация сгенерированных канонических координат системы двойного маятника}
+		\end{subfigure}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Вычислительный эксперимент}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.99\textwidth]{pics/slide3_1.png}
-	%\caption{Рис. 	}
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{analytical_pendulum.png}
+		\caption{Динамика системы, аналитическое решение}
+		\label{fig:y equals x}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{fc_pendulum.png}
+		\caption{Динамика системы, полносвязная нейронной сети}
+		\label{fig:three sin x}
+	\end{subfigure}
+	\hfill
+	\vfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{lstm_pendulum.png}
+		\caption{Динамика системы, LSTM}
+		\label{fig:three sin x}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{lnn_pendulum.png}
+		\caption{Динамика системы, LNN}
+		\label{fig:five over x}
+	\end{subfigure}
+	\caption{Моделирование динамики системы двойного маятника различными видами нейронных сетей: аналитическое решение, полносвязная нейронная сеть, LSTM, LNN.}
+	\label{fig:three graphs}
 \end{figure}
-\end{frame}
-
-%-----------------------------------------------------------------------------------------------------
-\begin{frame}{Нейронный оператор}
-	Итеративная структура решения:
-	$$x\mapsto v_{0} \mapsto v_{1} \mapsto \ldots \mapsto v_{K} \mapsto y,$$
-	где $v_{j}, j=0,1, \ldots, K-1$ -последовательность функций, $v_{0}(p)=P(x(t))$,  $x(t)=Q\left(v_{K}(t)\right), Q: \mathbb{R}^{d_{v}} \rightarrow \mathbb{R}^{d_{y}}$, $P(.), Q(.)$ -- полносвязные слои
-	\begin{block}{Определение 1 (Слой нейронного оператора)}
-		$$v_{k+1}(t):=\sigma\left(W v_{k}(t)+\left(\mathcal{K}(x ; \phi) v_{k}\right)(t)\right), \quad \forall t \in D,$$
-		где  $\mathcal{K}(x ; \phi)$ -- ядерный интегральный оператор, $W: \mathbb{R}^{d_{v}} \rightarrow \mathbb{R}^{d_{v}}$ -- линейное преобразование, $\sigma: \mathbb{R} \rightarrow \mathbb{R}$ -- нелинейная функция активации
-	\end{block}
-	\begin{block}{Определение 2 (Ядерный интегральный оператор)}
-		$$
-		\left(\mathcal{K}(x ; \phi) v_{k}\right)(t):=\int_{D} \kappa(t, q, x(t), x(q) ; \phi) v_{k}(q) \mathrm{d} q, \quad \forall p \in D,$$
-		где  $\kappa_{\phi}: \mathbb{R}^{2\left(d+d_{x}\right)} \rightarrow \mathbb{R}^{d_{v} \times d_{v}}$ --  нейросеть, параметризованная $\phi \in \Theta_{\mathcal{K}}$
-		
-	\end{block}
-	
 	
 \end{frame}
-%-----------------------------------------------------------------------------------------------------
-\begin{frame}{Нейронный Фурье оператор}
 
-	
-	\begin{block}{Определение 3 (Интегральный Фурье оператор)}
-		Убирая зависимость от функции $x$ и применяя теорему о свертке, получим:
-		$$
-		\left(\mathcal{K}(\phi) v_{k}\right)(t)=\mathcal{F}^{-1}\left(R_{\phi} \cdot\left(\mathcal{F} v_{k}\right)\right)(t) \quad \forall t \in D,
-		$$ 
-		где $R_{\phi} = \mathcal{F}\left(\kappa_{\phi}\right) $ -- преобразование Фурье функции $\kappa: \bar{D} \rightarrow \mathbb{R}^{d_{v} \times d_{v}}$ параметризованной $\phi \in \Theta_{\mathcal{K}}$
-		
-	\end{block}
-		\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.99\textwidth]{pics/architecture.png}
-		\caption{Рис.  Структура нейронного Фурье оператора}
-	\end{figure}
-\end{frame}
-
-\begin{frame}{Понижение размерностей}
-	 \textbf{Гипотеза}: 
-	 \begin{enumerate}
-	 	\item Понижение размерностей исходного и целевого пространств на основе методов PCA, PLS (отображения $F_{\mathcal{X}}, F_{\mathcal{Y}}$ в размерность ниже, отображения в исходную размерность $G_{\mathcal{X}}, G_{\mathcal{Y}}$)
-	 	\item Построение отображения $\chi$ между пространствами с размерностью ниже исходной
-	 \end{enumerate}
- $$
- \begin{aligned}
- G_{\mathcal{X}} \circ F_{\mathcal{X}} & \approx I_{\mathcal{X}} \\
- G_{\mathcal{Y}} \circ F_{\mathcal{Y}} & \approx I_{\mathcal{Y}} \\
- \end{aligned}$$
- $$\boxed{G_{\mathcal{Y}} \circ \chi \circ F_{\mathcal{X}}  \approx \Psi} $$
- 
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.5\textwidth]{pics/pca.png}
-		\caption{Рис. коммутативная диаграмма общей схемы декодирования при понижении исходного и целевого пространств ($\mathcal{X}, \mathcal{Y}$)}
-	\end{figure}
-
-\end{frame}
 %------------------------------------------------------------------------------------------------
 \begin{frame}{Будущая работа}
- \begin{itemize}
- 	\item Проведение экспериментов с применением FNO к декодированию сигналов EEG. 
- 	\item Проведение экспериментов с применением FNO к декодированию сигналов EEG с понижением исходного и целевого пространств
- 	\item Сравнение с существующими подходами
-\end{itemize}
+	\begin{itemize}
+		\item Добавить в сравнение модели SSA и Neural ODE, 
+		\item Добавить в сравнение модифицированную модель LNN, учитывающую трансляционную и вращательную симметрии.
+	\end{itemize}
 
+	\hfill
+	%\begin{block}{Опубликованные работы}
+	%	\textit{Котлярова Е.В., Северилов П.А., Ивченков Я.П., Мокров П.В., Чеканов М.О., Гасникова Е.В., Шароватова Ю.И}. Ускорение работы двухстадийной модели равновесного распределения потоков по сети / Компьютерные исследования и моделирование (том 14), 2022
+	%\end{block}
 \end{frame}
-%\begin{frame}{Вычислительный эксперимент}
-%	\begin{figure}[h]
-%		\centering
-%		\includegraphics[width=0.99\textwidth]{experiments.png}
-%		\caption{Рис. Результаты экспериментов для уравнения Бюргерса, потоков Дарси, %уравнениий Навье — Стокса}
-%	\end{figure}
-%	
-%\end{frame}
+
 
 \end{document} 
