@@ -122,7 +122,7 @@ class DatasetLSTM(torch.utils.data.Dataset):
     '''
     Generate a LSTM dataset from a normalized dataset
     '''
-    def __init__(self,seq_list):
+    def __init__(self, seq_list):
         self.X_list = []
         self.y_list = []
         for seq in tqdm(seq_list):
@@ -131,9 +131,9 @@ class DatasetLSTM(torch.utils.data.Dataset):
                 self.y_list.append(seq[i+4,:])
         self.sample_list = list(zip(self.X_list, self.y_list))
     
-    def __getitem__(self,index):
+    def __getitem__(self, index):
         X_sample,y_sample = self.sample_list[index]
-        return torch.from_numpy(X_sample).float(),torch.from_numpy(y_sample).float()
+        return torch.from_numpy(X_sample).float(), torch.from_numpy(y_sample).float()
     
     def __len__(self):
         return len(self.sample_list)
