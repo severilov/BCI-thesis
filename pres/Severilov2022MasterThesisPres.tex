@@ -146,55 +146,95 @@
 		\end{subfigure}
 	\end{figure}
 \end{frame}
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{LNN, учитывающая трансляционную и вращательную симметрии}
+	\begin{block}{Нётеровская Лагранжева нейронная сеть}
+		LNN, получающая на вход разницу между каноническими координатами $\delta \theta_{12} = \theta_1-\theta_2$ и аппроксимирующая потенциальную энергию системы $V(\delta \theta_{12})$
+	\end{block}
 
+	Аппроксимируемый лагранжиан примет вид:
+	$$
+	L=\frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} +\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\delta \theta_{12}\right) + V(\delta \theta_{12})
+	$$
+	
+	\begin{block}{Теорема 1}
+		Нётеровская LNN учитывает трансляционную симметрию.
+	\end{block}
+	
+	\begin{block}{Теорема 2}
+		Нётеровская LNN учитывает вращательную симметрию.
+	\end{block}
+\end{frame}
+
+%-----------------------------------------------------------------------------------------------------
 \begin{frame}{Вычислительный эксперимент}
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
+	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
-		\includegraphics[width=0.7\textwidth]{analytical_pendulum.png}
-		\caption{Динамика системы, аналитическое решение}
+		\includegraphics[width=0.9\textwidth]{predicted_trajectory_Analytical solution.png}
+		\caption{Аналитическое решение}
 		\label{fig:y equals x}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.49\textwidth}
+	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
-		\includegraphics[width=0.7\textwidth]{fc_pendulum.png}
-		\caption{Динамика системы, полносвязная нейронной сети}
+		\includegraphics[width=0.9\textwidth]{predicted_trajectory_FC.png}
+		\caption{FC}
 		\label{fig:three sin x}
 	\end{subfigure}
 	\hfill
-	\vfill
-	\begin{subfigure}[b]{0.49\textwidth}
+	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
-		\includegraphics[width=0.7\textwidth]{lstm_pendulum.png}
-		\caption{Динамика системы, LSTM}
+		\includegraphics[width=0.9\textwidth]{predicted_trajectory_LSTM.png}
+		\caption{LSTM}
 		\label{fig:three sin x}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
-		\includegraphics[width=0.7\textwidth]{lnn_pendulum.png}
-		\caption{Динамика системы, LNN}
+		\includegraphics[width=0.7\textwidth]{predicted_trajectory_LNN.png}
+		\caption{LNN}
 		\label{fig:five over x}
 	\end{subfigure}
-	\caption{Моделирование динамики системы двойного маятника различными видами нейронных сетей: аналитическое решение, полносвязная нейронная сеть, LSTM, LNN.}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{predicted_trajectory_LNN_noether.png}
+		\caption{Нётеровская LNN}
+		\label{fig:five over x}
+	\end{subfigure}
+	\caption{Моделирование динамики системы двойного маятника различными видами нейронных сетей: аналитическое решение, полносвязная нейронная сеть, LSTM, LNN, модифицированной LNN.}
 	\label{fig:three graphs}
 \end{figure}
 	
 \end{frame}
 
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Вычислительный эксперимент: MSE}
+	\begin{table}[]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			& FC          & LSTM        & LNN         & Нётеровская LNN \\ \hline
+			MSE & $0.00 \pm 0.01$ & $0.00 \pm 0.01$ & $0.00 \pm 0.01$ & \textbf{0.00} $ \pm 0.01$ \\ \hline
+		\end{tabular}
+		\caption{Средняя ошибка MSE между предсказанной динамикой системы нейронной сетью и динамикой системы, полученной аналитическим решением.}
+	\end{table}
+\end{frame}
+
 %------------------------------------------------------------------------------------------------
-\begin{frame}{Будущая работа}
+\begin{frame}{Заключение}
+	Проделанная работа
 	\begin{itemize}
-		\item Добавить в сравнение модели SSA и Neural ODE, 
-		\item Добавить в сравнение модифицированную модель LNN, учитывающую трансляционную и вращательную симметрии.
+		\item Показано, что LNN является оптимальной среди моделей FN, LSTM
+		\item Представлена Нётеровская LNN, учитываящая дополнительные симметрии кроме закона сохранения энергии
+		\item Показано, что более интерпретируемая модель дает более точные результаты для решения задачи моделирования динамики физической системы
 	\end{itemize}
 
 	\hfill
-	%\begin{block}{Опубликованные работы}
-	%	\textit{Котлярова Е.В., Северилов П.А., Ивченков Я.П., Мокров П.В., Чеканов М.О., Гасникова Е.В., Шароватова Ю.И}. Ускорение работы двухстадийной модели равновесного распределения потоков по сети / Компьютерные исследования и моделирование (том 14), 2022
-	%\end{block}
+	\begin{block}{Опубликованные работы}
+		\textit{Котлярова Е.В., Северилов П.А., Ивченков Я.П., Мокров П.В., Чеканов М.О., Гасникова Е.В., Шароватова Ю.И}. Ускорение работы двухстадийной модели равновесного распределения потоков по сети / Компьютерные исследования и моделирование (том 14), 2022
+	\end{block}
 \end{frame}
 
 
