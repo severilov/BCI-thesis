@@ -1,4 +1,11 @@
 \documentclass[10pt,unicode]{beamer}
+
+%\usecolortheme{beaver}
+%\setbeamertemplate{blocks}[rounded=true, shadow=true]
+\setbeamertemplate{footline}[page number]
+%\setbeamercolor{itemize item}{fg=red}
+%\setbeamercolor{enumerate item}{fg=red}
+
 \usepackage{cmap}
 \usepackage[T1, T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
@@ -6,14 +13,15 @@
 \usepackage{amsmath,mathrsfs,amsfonts,amssymb, mathtools}
 \usepackage{graphicx, epsfig}
 
-
-
 \usepackage{float}
 \usepackage[noend]{algorithmic}
 \usepackage{subcaption}
 \usepackage{tikz}
+%\usepackage{biblatex}
 \usetikzlibrary{matrix}
 \input{../doc/newcommands.tex}
+
+%\addbibresource{Severilov2022MasterThesisPresCite.bib}
 
 \usepackage{multirow}
 \captionsetup{labelformat=empty}
@@ -22,6 +30,7 @@
 
 \definecolor{beamer@blendedblue}{RGB}{15,120,80}
 \graphicspath{{../figures/}}
+
 
 \setbeamertemplate{navigation symbols}{}
 
@@ -34,9 +43,9 @@
 	\setbeamertemplate{caption}[numbered]
 } 
 %----------------------------------------------------------------------------------------------------------
-\title[]{Выбор оптимальной модели в задаче моделирования динамики физической системы нейронными сетями}
+\title[]{Выбор оптимальной модели в задаче моделирования динамики физической системы}
 \author{Северилов Павел}
-\date{27 апреля 2022г.}
+\date{15 июня 2022г.}
 \institute[МФТИ]{Московский физико-технический институт \\
 	Кафедра интеллектуальных систем
 	\vspace{0.3cm} \\
@@ -57,22 +66,22 @@
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
 \begin{frame}{Введение}
-	\textbf{Рассматривается задача} выбора оптимальной модели предсказания динамики физической системы. Под динамикой системы понимается изменение во времени параметров системы. \\ \vspace{0.3cm}
+	\textbf{Решается задача} выбора оптимальной модели предсказания динамики физической системы. Под динамикой системы понимается изменение во времени параметров системы. \\ \vspace{0.3cm}
 	
-	\textbf{Проблема}: Интерпретируемые модели решения задачи разработаны для получения динамики ограниченного набора физических систем, не полностью учитывают физические законы \\ \vspace{0.3cm}
+	\textbf{Проблема}: Нейронные сети не имеют априорных знаний о моделируемой системе, что не позволяет получить оптимальные параметры, учитывающие физические законы.\\ \vspace{0.3cm}
 
-	\textbf{Гипотеза}: Лагранжева нейронная сеть (LNN) является оптимальной моделью в смысле точности и сложности \\ \vspace{0.3cm}
+	\textbf{Гипотеза}: Внесение априорного знания о физике системы повышает качество модели. \\ \vspace{0.3cm}
+	%Лагранжева нейронная сеть (LNN) является оптимальной моделью в смысле точности и сложности среди неинтерпретируемых. 
 	
 	%Актуальность: предполагается, что рассматриваемый подход к декодированию сигналов применим к сигналам с носимых устройств:
 	%1 для передискретизации сигнала при низких частотах семплирования
 	%2 для обработки нерегулярных по времени данных при непостоянном контакте со считывающим устройством
 	
-	\textbf{Предлагается:}
-	Сгенерировать данные для системы двойного маятника и сравнить моделирование динамики системы моделью LNN и неинтерпретируемыми моделями. \\ \vspace{0.3cm}
-	
-	\textbf{Новизна:}
-	Интерпретация оптимальности модели LNN в терминах симметрии Нётер. Предлагается использование новой модификации LNN, учитывающей иные симметрии кроме закона сохранения энергии.
+	\textbf{Предлагается:} модификация Лагранжевой нейронной сети (LNN), учитывающая трансляционную и вращательную симметрии кроме закона сохранения энергии. Проверить оптимальность LNN, сравнив с моделями без априорных знаний о моделируемой физической системе. \\ \vspace{0.3cm}
 		
+	\textbf{Эксперимент:}
+	Сгенерировать данные для системы двойного маятника и сравнить результаты моделирования динамики системы различными моделями нейронных сетей.
+	
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
 %\begin{frame}{Основные работы}
@@ -87,154 +96,225 @@
 %\end{frame}
 
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Лагранжевы нейронные сети (LNN)}
-\begin{itemize}
-	\item Вход модели: $x_t = (q_t, \dot{q}_t)$ (канонические координаты)
-	\item Требуется получить $\dot{x}_t = (\dot{q}_t, \ddot{q}_t)$
-	\item Аппроксимировать нейронной сетью лагранжиан $\mathcal{L}$
-	\item Из ограничений Эйлера-Лагранжа получить выражение для обратного распространения ошибки
-	$$
-	\ddot{q} =\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} \mathcal{L}\right)^{-1}\left[\nabla_{q} \mathcal{L}-\left(\nabla_{q} \nabla_{\dot{q}}^{\top} \mathcal{L}\right) \dot{q}\right]
-	$$ 
-	\item \textbf{Функция ошибки}: $$\mathcal{L} = \left\|\dot{x}^{\mathcal{L_{\theta}}}_t -\dot{x}^{true}_t\right\|_{2}$$
-\end{itemize}
+\begin{frame}{Постановка задачи регрессии динамики физической системы}
+\begin{enumerate}
+	\item Дана выборка $m$ траекторий $$\left\{\boldsymbol{x}_i, \boldsymbol{y}_i\right\}_{i=1}^m,$$ где $\boldsymbol{x}_i = (\boldsymbol{q}_i, \boldsymbol{\dot{q}}_i)$~--  координаты траектории движения двойного маятника, $\boldsymbol{{y}}_i = \boldsymbol{\dot{x}}_i = (\boldsymbol{\dot{q}}_i, \boldsymbol{\ddot{q}}_i)$ -- динамика движения системы двойного маятника, $\boldsymbol{q}_i \in \mathbb{R}^{r \times n}$, где $r$ -- количество координат, $n$ -- длина траектории
+	\item Модель выбирается из класса нейронных сетей
+	$$\{\boldsymbol{f}_k\colon(\boldsymbol{w}, \boldsymbol{X})\to  \hat{\boldsymbol{y}} \mid k \in \mathcal{K}\},$$ где $\boldsymbol{w} \in \mathbb{W}$~-- параметры модели, $\hat{\boldsymbol{y}} = \boldsymbol{f} (\boldsymbol{X},\boldsymbol{w}) \in \mathbb{R}^{2\times r \times n}, \boldsymbol{X} = \bigcup_{i=1}^m \boldsymbol{x}_i$.
+	\item Функция ошибки
+	$$\mathcal{L}(\boldsymbol{y}, \boldsymbol{X}, \boldsymbol{w}) =\left\lVert \hat{\boldsymbol{y}} - \boldsymbol{y} \right\rVert^{2}_2.$$
+	\item Решается задача оптимизации: 
+	$$\textbf{w}^* = \underset{\mathbf{w}\in\mathbb{W}}{\text{argmin}}\bigl(\mathcal{L}(\textbf{w})\bigr).$$
+\end{enumerate}
 \end{frame}
+%-----------------------------------------------------------------------------------------------------
+
+\begin{frame}{Система двойного маятника}
+	
+	\begin{enumerate}
+		\item Координаты $\textbf{q} = (\boldsymbol{\theta}_1, \boldsymbol{\theta}_2)$ -- углы между стержнями маятника и вертикальной осью;
+		\item \textbf{Лагранжиан} системы двойного маятника $L = T - V$, где  $T, V$ -- кинетическая и потенциальная энергии системы:
+		$$
+		\begin{aligned}
+		L = \frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} &+\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\theta_{1}-\theta_{2}\right) \\
+		&+\left(m_{1}+m_{2}\right) g l_{1} \cos \theta_{1}+m_{2} g l_{2} \cos \theta_{2}
+		\end{aligned}
+		$$
+	\end{enumerate}
+
+	\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.4\textwidth]{double_pendulum_scheme.png}
+			\caption*{Cхема физической системы двойного маятника}
+			\label{fig:pendulum_system}
+	\end{figure}
+\end{frame}
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Лагранжева динамика}
+\begin{enumerate}
+
+	\item Лагранжиан системы $L$ учитывает законы сохранения энергии, импульса и момента импульса;
+	\item Уравнение Эйлера Лагранжа описывает динамику системы $$\frac{d}{d t} \frac{\partial L}{\partial \dot{q}_{j}}=\frac{\partial L}{\partial q_{j}};$$
+	\item В нейронную сеть $$f: \boldsymbol{X} = (\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{Y}$$
+	предлагается добавить априорные знания о физике системы, учитывая лагранжиан системы:
+	$$f: \boldsymbol{X} = (\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{L};$$
+
+	\item Из ограничений Эйлера-Лагранжа получаем выражение для обратного распространения ошибки\footnote{\textit{Cranmer, M. Greydanus et al.} Lagrangian Neural Networks. / ICLR 2020 Workshop}
+	$$
+	\boldsymbol{\ddot{q}} =\left(\nabla_{\boldsymbol{\dot{q}}} \nabla_{\boldsymbol{\dot{q}}}^{\top} L\right)^{-1}\left[\nabla_{\boldsymbol{q}} L-\left(\nabla_{\boldsymbol{q}} \nabla_{\boldsymbol{\dot{q}}}^{\top} L\right) \boldsymbol{\dot{q}}\right],
+	~~~\left(\nabla_{q} \nabla_{\dot{q}}^{\top} L\right)_{i j}=\frac{\partial^{2} L}{\partial q_{j} \partial \dot{q}_{i}}
+	$$ 
+\end{enumerate}
+
+\end{frame}
+
 %-----------------------------------------------------------------------------------------------------
 \begin{frame}{Лагранжевы нейронные сети (LNN)}
 	 \begin{figure}[H]
 	 	\centering
 	 	\begin{subfigure}[b]{0.49\textwidth}
 	 		\centering
-	 		\includegraphics[width=0.6\textwidth]{baseline_nn_scheme.png}
-	 		\caption{Схема работы базового решения моделирования динамики физической системы нейронными сетями}
+	 		\includegraphics[width=0.55\textwidth]{baseline_nn_scheme.png}
+	 		\caption*{Схема работы базового решения нейронными сетями}
 	 		\label{fig:y equals x}
 	 	\end{subfigure}
 	 	\hfill
 	 	\begin{subfigure}[b]{0.49\textwidth}
 	 		\centering
 	 		\includegraphics[width=\textwidth]{lnn_scheme.png}
-	 		\caption{Схема работы Lagrangian Neural Networks (LNN) моделирования динамики физической системы}
+	 		\caption*{Схема работы LNN для моделирования динамики физической системы}
 	 		\label{fig:three sin x}
 	 	\end{subfigure}
 	 \end{figure}
 
 \end{frame}
-
 %-----------------------------------------------------------------------------------------------------
-
-\begin{frame}{Вычислительный эксперимент: Данные}
-	Лагранжиан системы двойного маятника:
-	$$
-	\begin{aligned}
-	L=\frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} &+\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\theta_{1}-\theta_{2}\right) \\
-	&+\left(m_{1}+m_{2}\right) g l_{1} \cos \theta_{1}+m_{2} g l_{2} \cos \theta_{2}
-	\end{aligned}
-	$$
-	\begin{figure}[H]
-		\centering
+\begin{frame}{LNN, учитывающая трансляционную и вращательную симметрии}
+	Предлагается \textit{Нётеровская Лагранжева нейронная сеть (LNN)}, которая получает на вход разницу между координатами 
+	$$\Delta q_{ij} =\sqrt{\left({q}_{i}-{q}_{j}\right) \cdot\left({q}_{i}-{q}_{j}\right)}  $$
+	 и аппроксимирует потенциальную энергию системы $\boldsymbol{V}(\Delta \boldsymbol{q})$:
+	$$f: \boldsymbol{X} = (\boldsymbol{\Delta q})\rightarrow \boldsymbol{V},$$
+		 \begin{figure}[H]
 		\begin{subfigure}[b]{0.49\textwidth}
 			\centering
-			\includegraphics[width=0.9\textwidth]{double_pendulum_scheme.png}
-			\caption{Cхема физической системы двойного маятника}
-			\label{fig:pendulum_system}
+			\includegraphics[width=0.99\textwidth]{lnn_scheme.png}
+			\caption*{Схема работы LNN}
+			%\label{fig:y equals x}
 		\end{subfigure}
 		\hfill
 		\begin{subfigure}[b]{0.49\textwidth}
 			\centering
-			\includegraphics[width=0.9\textwidth]{data_field.png}
-			\caption{Визуализация сгенерированных канонических координат системы двойного маятника}
+			\includegraphics[width=0.95\textwidth]{noether_lnn_scheme.png}
+			\caption*{Cхема работы Нётеровской LNN}
+			%\label{fig:three sin x}
 		\end{subfigure}
 	\end{figure}
+
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{LNN, учитывающая трансляционную и вращательную симметрии}
-	\begin{block}{Нётеровская Лагранжева нейронная сеть}
-		LNN, получающая на вход разницу между каноническими координатами $\delta \theta_{12} = \theta_1-\theta_2$ и аппроксимирующая потенциальную энергию системы $V(\delta \theta_{12})$
-	\end{block}
-
-	Аппроксимируемый лагранжиан примет вид:
+\begin{frame}{Нётеровская Лагранжева нейронная сеть}
+	
+	Для системы двойного маятника разница координат $\Delta q \equiv \Delta \theta_{12} = \theta_1-\theta_2$ и аппроксимируемый лагранжиан примет вид:
 	$$
-	L=\frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} +\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\delta \theta_{12}\right) + V(\delta \theta_{12})
+	L=\frac{1}{2}\left(m_{1}+m_{2}\right) l_{1}^{2} \dot{\theta}_{1}^{2} +\frac{1}{2} m_{2} l_{2}^{2} \dot{\theta}_{2}^{2}+m_{2} l_{1} l_{2} \dot{\theta}_{1} \dot{\theta}_{2} \cos \left(\Delta \theta_{12}\right) + V(\Delta \theta_{12})
 	$$
 	
-	\begin{block}{Теорема 1}
-		Нётеровская LNN учитывает трансляционную симметрию.
+	\begin{block}{Теорема 1 (Северилов, 2022)}
+		Нётеровская LNN учитывает трансляционную симметрию (закон сохранения импульса). Т.е. лагранжиан системы не изменится, если подвергнуть элементы системы перемещению $\boldsymbol\xi$: 
+		$$L(\boldsymbol{\Delta \tilde{q}} , \boldsymbol{{\Delta \dot{\tilde{q}}}} ) = L(\boldsymbol{\Delta q}, \boldsymbol{\dot{q}}), ~~\boldsymbol{\tilde{q}} = \boldsymbol{q} + \boldsymbol{\xi}$$
+		
 	\end{block}
 	
-	\begin{block}{Теорема 2}
-		Нётеровская LNN учитывает вращательную симметрию.
+	\begin{block}{Теорема 2 (Северилов, 2022)}
+		Нётеровская LNN учитывает вращательную симметрию (закон сохранения момента импульса). Т.е. лагранжиан системы не изменится, если подвергнуть элементы системы повороту $\boldsymbol{Q}$: 
+		$$L(\boldsymbol{\Delta \tilde{q}} , \boldsymbol{{\Delta \dot{\tilde{q}}}} ) = L(\boldsymbol{\Delta q}, \boldsymbol{\dot{q}}),~~ \boldsymbol{\tilde{q}} = \boldsymbol{Q}\boldsymbol{q}$$
 	\end{block}
 \end{frame}
 
 %-----------------------------------------------------------------------------------------------------
-\begin{frame}{Вычислительный эксперимент}
+\begin{frame}{Сравниваемые методы моделирования динамики системы}
+\begin{table}[]
+	\begin{tabular}{c|c}
+		\textbf{Аналитическое решение}                                                                              & Метод Рунге-Кутты 4 порядка \\ \hline
+		\textbf{\begin{tabular}[c]{@{}c@{}}Полносвязная нейронная \\ сеть (FC)\end{tabular}}                        &            \begin{tabular}[c]{@{}c@{}}$f: \boldsymbol{X} = (\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{Y}$, \\$f = \sigma(... \boldsymbol{W}^T \sigma(\boldsymbol{W}^T\boldsymbol{x} + \boldsymbol{b}))$ \end{tabular}                          \\ \hline
+		\textbf{\begin{tabular}[c]{@{}c@{}}Нейронная сеть с долгой \\ краткосрочной памятью \\ (LSTM)\end{tabular}} &        \begin{tabular}[c]{@{}c@{}}$h: \boldsymbol{X} = (\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{Y}$, \\
+			$\begin{aligned} f_{t} &=\sigma_{g}\left(W_{f} x_{t}+U_{f} h_{t-1}+b_{f}\right) \\ i_{t} &=\sigma_{g}\left(W_{i} x_{t}+U_{i} h_{t-1}+b_{i}\right) \\ o_{t} &=\sigma_{g}\left(W_{o} x_{t}+U_{o} h_{t-1}+b_{o}\right) \\ c_{t} &=f_{t} \circ c_{t-1}+i_{t} \circ \sigma_{c}\left(W_{c} x_{t}+U_{c} h_{t-1}+b_{c}\right) \\ h_{t} &=o_{t} \circ \sigma_{h}\left(c_{t}\right) \end{aligned}$  
+		 \end{tabular}                  \\ \hline
+		\textbf{LNN}     &            \begin{tabular}[c]{@{}c@{}}$f: \boldsymbol{X} = (\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{L}$, \\$\ddot{q} =\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} L\right)^{-1}\left[\nabla_{q} L-\left(\nabla_{q} \nabla_{\dot{q}}^{\top} L\right) \dot{q}\right]$ \end{tabular}                \\ \hline
+		\textbf{Нётеровская LNN}                                                                                    &       \begin{tabular}[c]{@{}c@{}}$f: \boldsymbol{X} =(\boldsymbol{q}, \boldsymbol{\dot{q}}) \rightarrow \boldsymbol{V}$, \\$L = T - V$, 	\\$\ddot{q} =\left(\nabla_{\dot{q}} \nabla_{\dot{q}}^{\top} L\right)^{-1}\left[\nabla_{q} L-\left(\nabla_{q} \nabla_{\dot{q}}^{\top} L\right) \dot{q}\right]$ \end{tabular}                         
+	\end{tabular}
+\end{table}
+\end{frame}
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Моделирование динамики системы двойного маятника различными нейронными сетями}
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
 		\includegraphics[width=0.9\textwidth]{predicted_trajectory_Analytical solution.png}
-		\caption{Аналитическое решение}
+		\caption*{Аналитическое решение}
 		\label{fig:y equals x}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
 		\includegraphics[width=0.9\textwidth]{predicted_trajectory_FC.png}
-		\caption{FC}
+		\caption*{FC}
 		\label{fig:three sin x}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.32\textwidth}
 		\centering
 		\includegraphics[width=0.9\textwidth]{predicted_trajectory_LSTM.png}
-		\caption{LSTM}
+		\caption*{LSTM}
 		\label{fig:three sin x}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
 		\includegraphics[width=0.7\textwidth]{predicted_trajectory_LNN.png}
-		\caption{LNN}
+		\caption*{LNN}
 		\label{fig:five over x}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
 		\includegraphics[width=0.7\textwidth]{predicted_trajectory_LNN_noether.png}
-		\caption{Нётеровская LNN}
+		\caption*{Нётеровская LNN}
 		\label{fig:five over x}
 	\end{subfigure}
-	\caption{Моделирование динамики системы двойного маятника различными видами нейронных сетей: аналитическое решение, полносвязная нейронная сеть, LSTM, LNN, модифицированной LNN.}
+	\caption{%Цвет точек показывает момент времени траектории.
+			Добавление априорных знаний о лагранжиане системы повышает точность предсказания динамики системы (траектории движения маятника)
+	}
 	\label{fig:three graphs}
 \end{figure}
-	
+
 \end{frame}
 
 %-----------------------------------------------------------------------------------------------------
 \begin{frame}{Вычислительный эксперимент: MSE}
+	%Как получена выборка?
+	%Как порождена, начальные условия
+	%Ошибки на сетке и шаге решения аналитического (рунге-кутты)
+	
+	Выборка состоит из 10 траекторий, сгенерированных на основе решения методом Рунге-Кутты 4 порядка.
 	\begin{table}[]
-		\begin{tabular}{|l|l|l|l|l|}
-			\hline
-			& FC          & LSTM        & LNN         & Нётеровская LNN \\ \hline
-			MSE & $0.00 \pm 0.01$ & $0.00 \pm 0.01$ & $0.00 \pm 0.01$ & \textbf{0.00} $ \pm 0.01$ \\ \hline
-		\end{tabular}
-		\caption{Средняя ошибка MSE между предсказанной динамикой системы нейронной сетью и динамикой системы, полученной аналитическим решением.}
+	\begin{tabular}{c|c}
+		FC              & $1.57 \pm 0.53$                          \\ \hline
+		LSTM            & $2.42  \pm 0.79$                            \\ \hline
+		LNN             & $1.32\pm 0.91$                            \\ \hline
+		Нётеровская LNN & \textbf{ 1.28} $ \pm 0.66$
+	\end{tabular}
+	\caption{Средняя ошибка MSE между предсказанной динамикой системы нейронной сетью и динамикой системы, полученной аналитическим решением.}
 	\end{table}
+		
+	\begin{enumerate}
+		\item LNN и FC, LSTM: модель, имеющая априорные знания о физике системы имеет выше точность моделирования динамики системы
+		\item LNN и Нётеровская LNN: добавление дополнительных априорных знаний о физике системы повышает точность моделирования динамики системы
+	\end{enumerate}
 \end{frame}
 
 %------------------------------------------------------------------------------------------------
-\begin{frame}{Заключение}
-	Проделанная работа
-	\begin{itemize}
-		\item Показано, что LNN является оптимальной среди моделей FN, LSTM
-		\item Представлена Нётеровская LNN, учитываящая дополнительные симметрии кроме закона сохранения энергии
-		\item Показано, что более интерпретируемая модель дает более точные результаты для решения задачи моделирования динамики физической системы
-	\end{itemize}
+%\begin{frame}{Сравнение сложности моделей}
+%\end{frame}
+%------------------------------------------------------------------------------------------------
+\begin{frame}{Выносится на защиту}
+	
+	\begin{enumerate}
+		\item Предложена Нётеровская LNN, которая в дополнение к закону сохранения энергии учитывает закон сохранения импульса и момента импульса;
+		\item Доказаны теоремы, подтверждающие учет закон сохранения импульса и момента импульса;
+		\item Показано, что добавление априорных знаний о физике системы повышает точность моделирования динамики физической системы.
+	\end{enumerate}
 
 	\hfill
+	\begin{block}{К публикации}
+			\textit{Северилов П.А., Стрижов В.В.} Выбор оптимальной модели в задаче моделирования динамики физической системы\footnote{Код вычислительного эксперимента \href{https://github.com/severilov/master-thesis/tree/main/code}{\color{blue}{https://github.com/severilov/master-thesis}}} / 2022
+	\end{block}
+	
 	\begin{block}{Опубликованные работы}
 		\textit{Котлярова Е.В., Северилов П.А., Ивченков Я.П., Мокров П.В., Чеканов М.О., Гасникова Е.В., Шароватова Ю.И}. Ускорение работы двухстадийной модели равновесного распределения потоков по сети / Компьютерные исследования и моделирование (том 14), 2022
 	\end{block}
+
 \end{frame}
 
 
